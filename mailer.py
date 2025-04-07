@@ -1,13 +1,21 @@
-import smtplib
-from email.mime.text import MIMEText
 import os
+import smtplib
+from email.message import EmailMessage
 
-def send_email(summary):
-    msg = MIMEText(summary)
-    msg['Subject'] = "[오늘의 AI 뉴스 요약]"
-    msg['From'] = os.getenv("MAIL_FROM")
-    msg['To'] = os.getenv("MAIL_TO")
+def send_email(subject, text_body, html_body):
+    mail_from = os.getenv("MAIL_FROM")
+    mail_pass = os.getenv("MAIL_PASS")
+    mail_to = os.getenv("MAIL_TO")
 
-    with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
-        server.login(os.getenv("MAIL_FROM"), os.getenv("MAIL_PASS"))
-        server.send_message(msg)
+    msg = EmailMessage()
+    msg['Subject'] = subject
+    msg['From'] = mail_from
+    msg['To'] = mail_to
+    msg.set_content(text_body)
+    msg.add_alternative(html_body, subtype='html')
+
+    with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+        smtp.login(mail_from, mail_pass)
+        smtp.send_message(msg)
+
+    print("📧 메일 보내기 완료!")
