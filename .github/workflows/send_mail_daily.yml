@@ -1,0 +1,29 @@
+name: Daily AI News Mail
+
+on:
+  schedule:
+    - cron: '0 23 * * *'  # 한국시간 오전 8시 (UTC 기준)
+
+jobs:
+  send-mail:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run mail bot
+        env:
+          MAIL_FROM: ${{ secrets.MAIL_FROM }}
+          MAIL_PASS: ${{ secrets.MAIL_PASS }}
+          MAIL_TO: ${{ secrets.MAIL_TO }}
+        run: |
+          python main.py
