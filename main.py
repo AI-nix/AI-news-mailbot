@@ -3,7 +3,7 @@ from summarizer import summarize_news
 from mailer import send_email
 
 if __name__ == '__main__':
-    news_list = summarize_news()
+    news_list = summarize_news(articles)
 
     # Markdown 스타일 텍스트 요약 생성
     summary = ""
