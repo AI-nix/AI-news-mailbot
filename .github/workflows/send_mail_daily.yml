@@ -3,6 +3,7 @@ name: Daily AI News Mail
 on:
   schedule:
     - cron: '0 23 * * *'  # 한국시간 오전 8시 (UTC 기준)
+  workflow_dispatch:
 
 jobs:
   send-mail:
